@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {Injector, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
+import {createCustomElement} from "@angular/elements";
 
 @NgModule({
   declarations: [
@@ -11,6 +12,13 @@ import { AppComponent } from './app.component';
     BrowserModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(injector: Injector) {
+    const el = createCustomElement(AppComponent, {injector});
+    if (!customElements.get('micro-angular')) {
+      customElements.define('micro-angular', el);
+    }
+  }
+}
